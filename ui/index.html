@@ -7,7 +7,8 @@
     <title>Document.io Editor</title>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- TODO: figure out a way to inject without using root element. Breaks on react apps -->
+    <div id="dce-modal-root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

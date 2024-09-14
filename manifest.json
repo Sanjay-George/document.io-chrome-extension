@@ -30,5 +30,15 @@
     ],
     "action": {
         "default_popup": ""
-    }
+    },
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "ui/dist/assets/*"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ]
 }
