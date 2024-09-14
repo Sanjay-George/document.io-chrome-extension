@@ -1,0 +1,34 @@
+{
+    "manifest_version": 3,
+    "name": "Ping and Highlight Extension",
+    "version": "1.0",
+    "description": "Sends a ping request and highlights elements on hover.",
+    "permissions": [
+        "contextMenus",
+        "tabs",
+        "activeTab",
+        "scripting"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "css": [
+                "styles.css"
+            ]
+        }
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "action": {
+        "default_popup": ""
+    }
+}
