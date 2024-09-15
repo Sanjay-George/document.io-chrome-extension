@@ -2,8 +2,8 @@ let selectedElement = null;
 let isModalOpen = false;
 
 const MODAL_ROOT_ID = 'dce-modal-root';
-const MODAL_SAVE_BUTTON_ID = 'dce-modal-save';
-const MODAL_CLOSE_BUTTON_ID = 'dce-modal-close';
+// const MODAL_SAVE_BUTTON_ID = 'dce-modal-save';
+// const MODAL_CLOSE_BUTTON_ID = 'dce-modal-close';
 
 // Add an event listener to highlight elements on mouse hover
 document.addEventListener("mouseover", (event) => {
@@ -24,30 +24,41 @@ document.addEventListener("mouseout", (event) => {
 
 // Right-click context menu handler
 document.addEventListener('contextmenu', function (e) {
-    // e.preventDefault();
     selectedElement = e.target;
     console.log('Selected element:', selectedElement);
     console.log('Query selector:', getQuerySelector(selectedElement));
 });
 
-// Add a click event listener to close the modal
-document.addEventListener('click', function (e) {
-    if (isModalOpen && e.target.id === MODAL_CLOSE_BUTTON_ID) {
-        console.log('Closing modal...');
-        document.getElementById(MODAL_ROOT_ID).style.display = 'none';
-        isModalOpen = false;
+// Message handler
+window.onmessage = (event) => {
+    const { action } = event.data;
+    if (action === 'closeModal') {
+        handleCloseModalMessage();
     }
-});
+};
+
+// Inject react component into the page on page load
+https://stackoverflow.com/a/43245774/6513094
+if (document.readyState !== 'complete') {
+    window.addEventListener('load', handlePageLoad);
+} else {
+    handlePageLoad();
+}
+
+function handlePageLoad() {
+    console.log('Page loaded');
+    injectModal();
+}
 
 
 // Listen for the message from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.action === 'openModal') {
+    if (message.action === 'annotate') {
         const querySelector = getQuerySelector(selectedElement);
-        console.log('Opening modal for:', querySelector);
 
-        // TODO: fetch all annotations 
-        openModal("test content");
+        console.log('Handling annotate action:', querySelector);
+
+        openModal({ querySelector });
 
         // // Fetch content for the modal from the API
         // fetch(`http://localhost:3000/api/fetchContent?selector=${encodeURIComponent(querySelector)}`)
@@ -56,41 +67,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         //         openModal(data.annotation);
         //     })
         //     .catch(error => console.error('Error fetching annotation:', error));
+
+
     }
 });
 
-// Function to get the query selector of the selected element
-// TODO: Improve this logic. This is a basic implementation.
-function getQuerySelector(element) {
-    let selector = '';
-    if (element.id) {
-        selector = `#${element.id}`;
-    } else if (element.className) {
-        selector = `.${element.className.trim().split(' ').join('.')}`;
-    } else {
-        selector = element.tagName.toLowerCase();
-    }
-    return selector;
-}
-
-
 // Open a resizable modal at the bottom of the page
-// TODO: Improve the modal - add a save button, edit button, etc.
-function openModal(annotation) {
+function openModal({ querySelector }) {
     isModalOpen = true;
-    let modal = document.getElementById('annotation-modal');
-    console.log('Opening Modal');
-    injectModal();
+    console.log('Posting a message to open the modal');
+    postMessage({ action: 'openModal', querySelector });
 }
 
 
 function injectModal() {
-    // Check if the modal already exists
+    // Create the modal container if it doesn't exist
     if (!document.getElementById(MODAL_ROOT_ID)) {
         // Create a div for the modal
         const modalContainer = document.createElement('div');
         modalContainer.id = MODAL_ROOT_ID;
-        console.log('Injecting modal...');
 
         // Append the container to the body
         document.body.appendChild(modalContainer);
@@ -106,9 +101,24 @@ function injectModal() {
         link.href = chrome.runtime.getURL('ui/dist/assets/index.css'); // Adjust the path if needed
         document.head.appendChild(link);
 
-    } else {
-        // If modal already exists, toggle its visibility
-        const modalContainer = document.getElementById(MODAL_ROOT_ID);
-        modalContainer.style.display = 'block';
     }
+}
+
+
+function handleCloseModalMessage() {
+    isModalOpen = false;
+}
+
+// Function to get the query selector of the selected element
+// TODO: Improve this logic. This is a basic implementation.
+function getQuerySelector(element) {
+    let selector = '';
+    if (element.id) {
+        selector = `#${element.id}`;
+    } else if (element.className) {
+        selector = `.${element.className.trim().split(' ').join('.')}`;
+    } else {
+        selector = element.tagName.toLowerCase();
+    }
+    return selector;
 }
