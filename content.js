@@ -154,6 +154,7 @@ function getUniqueSelector(element) {
             path.unshift(selector);
             element = element.parentNode;
 
+            // TODO: check performance impact.
             if (document.querySelectorAll(path.join(' > ')).length === 1) {
                 break;
             }
