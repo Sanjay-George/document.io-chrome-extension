@@ -12,6 +12,7 @@ chrome.runtime.onInstalled.addListener(() => {
         if (info.menuItemId === "addEditAnnotation") {
             // Send message to content script to open the modal
             chrome.tabs.sendMessage(tab.id, { action: "openModal", targetElement: info.targetElementId });
+            console.log('Context menu - add / edit annotation clicked');
         }
     });
 

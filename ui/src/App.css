@@ -58,7 +58,6 @@
   z-index: 9999;
 }
 
-/* TODO: apply the css to handle. Not working now */
 .overlay-handle {
   z-index: 10000;
   width: 15px;

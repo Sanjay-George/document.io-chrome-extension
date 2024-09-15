@@ -1,13 +1,23 @@
 let selectedElement = null;
 let isModalOpen = false;
 
+const MODAL_ROOT_ID = 'dce-modal-root';
+const MODAL_SAVE_BUTTON_ID = 'dce-modal-save';
+const MODAL_CLOSE_BUTTON_ID = 'dce-modal-close';
+
 // Add an event listener to highlight elements on mouse hover
 document.addEventListener("mouseover", (event) => {
+    if (isModalOpen) {
+        return;
+    }
     event.target.style.outline = "2px solid red";
 });
 
 // Remove the highlight when the mouse moves away
 document.addEventListener("mouseout", (event) => {
+    if (isModalOpen) {
+        return;
+    }
     event.target.style.outline = "none";
 });
 
@@ -18,6 +28,15 @@ document.addEventListener('contextmenu', function (e) {
     selectedElement = e.target;
     console.log('Selected element:', selectedElement);
     console.log('Query selector:', getQuerySelector(selectedElement));
+});
+
+// Add a click event listener to close the modal
+document.addEventListener('click', function (e) {
+    if (isModalOpen && e.target.id === MODAL_CLOSE_BUTTON_ID) {
+        console.log('Closing modal...');
+        document.getElementById(MODAL_ROOT_ID).style.display = 'none';
+        isModalOpen = false;
+    }
 });
 
 
@@ -60,16 +79,17 @@ function getQuerySelector(element) {
 function openModal(annotation) {
     isModalOpen = true;
     let modal = document.getElementById('annotation-modal');
+    console.log('Opening Modal');
     injectModal();
 }
 
 
 function injectModal() {
     // Check if the modal already exists
-    if (!document.getElementById('dce-modal-root')) {
+    if (!document.getElementById(MODAL_ROOT_ID)) {
         // Create a div for the modal
         const modalContainer = document.createElement('div');
-        modalContainer.id = 'dce-modal-root';
+        modalContainer.id = MODAL_ROOT_ID;
         console.log('Injecting modal...');
 
         // Append the container to the body
@@ -88,7 +108,7 @@ function injectModal() {
 
     } else {
         // If modal already exists, toggle its visibility
-        const modalContainer = document.getElementById('dce-modal-root');
-        modalContainer.style.display = modalContainer.style.display === 'none' ? 'block' : 'none';
+        const modalContainer = document.getElementById(MODAL_ROOT_ID);
+        modalContainer.style.display = 'block';
     }
 }
