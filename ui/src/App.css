@@ -3,7 +3,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  z-index: 999999;
+  position: sticky;
+  z-index: 9999;
 }
 
 .logo {
