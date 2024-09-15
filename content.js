@@ -25,8 +25,14 @@ document.addEventListener("mouseout", (event) => {
 // Right-click context menu handler
 document.addEventListener('contextmenu', function (e) {
     selectedElement = e.target;
-    console.log('Selected element:', selectedElement);
-    console.log('Query selector:', getQuerySelector(selectedElement));
+
+    console.log();
+    console.log('User selected element:', selectedElement);
+    const qs = getQuerySelector(selectedElement);
+    console.log('Query selector:', qs);
+    console.log('Element recorded:', document.querySelector(qs));
+    console.log();
+
 });
 
 // Message handler
@@ -55,9 +61,6 @@ function handlePageLoad() {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'annotate') {
         const querySelector = getQuerySelector(selectedElement);
-
-        console.log('Handling annotate action:', querySelector);
-
         openModal({ querySelector });
 
         // // Fetch content for the modal from the API
@@ -110,15 +113,53 @@ function handleCloseModalMessage() {
 }
 
 // Function to get the query selector of the selected element
-// TODO: Improve this logic. This is a basic implementation.
+// TODO: test this rigorously
 function getQuerySelector(element) {
-    let selector = '';
-    if (element.id) {
-        selector = `#${element.id}`;
-    } else if (element.className) {
-        selector = `.${element.className.trim().split(' ').join('.')}`;
-    } else {
-        selector = element.tagName.toLowerCase();
+    return getUniqueSelector(element);
+}
+
+
+function getUniqueSelector(element) {
+    if (!(element instanceof Element)) {
+        throw new Error('The provided input is not a DOM element');
     }
-    return selector;
+
+    function getPathTo(element) {
+        if (element.id) {
+            return `#${CSS.escape(element.id)}`;
+        }
+
+        if (element === document.body) {
+            return 'body';
+        }
+
+        let path = [];
+        while (element.nodeType === Node.ELEMENT_NODE) {
+            let selector = element.nodeName.toLowerCase();
+            if (element.className && typeof element.className === 'string') {
+                selector += `.${Array.from(element.classList)
+                    .map(i => CSS.escape(i))
+                    .join('.')}`;
+            }
+            if (element !== document.documentElement) {
+                let sibling = element;
+                let nth = 1;
+                while (sibling = sibling.previousElementSibling) {
+                    if (sibling.nodeName.toLowerCase() === selector.split('.')[0]) {
+                        nth++;
+                    }
+                }
+                selector += `:nth-of-type(${nth})`;
+            }
+            path.unshift(selector);
+            element = element.parentNode;
+
+            if (document.querySelectorAll(path.join(' > ')).length === 1) {
+                break;
+            }
+        }
+        return path.join(' > ');
+    }
+
+    return getPathTo(element);
 }
