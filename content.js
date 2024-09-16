@@ -62,16 +62,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'annotate') {
         const querySelector = getQuerySelector(selectedElement);
         openModal({ querySelector });
-
-        // // Fetch content for the modal from the API
-        // fetch(`http://localhost:3000/api/fetchContent?selector=${encodeURIComponent(querySelector)}`)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         openModal(data.annotation);
-        //     })
-        //     .catch(error => console.error('Error fetching annotation:', error));
-
-
     }
 });
 
@@ -79,7 +69,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 function openModal({ querySelector }) {
     isModalOpen = true;
     console.log('Posting a message to open the modal');
-    postMessage({ action: 'openModal', querySelector });
+
+    // Get the pageId from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageId = urlParams.get('pageId');
+    const url = window.location.origin + window.location.pathname;
+    postMessage({ action: 'openModal', target: querySelector, url, pageId });
 }
 
 
@@ -103,7 +98,6 @@ function injectModal() {
         link.rel = 'stylesheet';
         link.href = chrome.runtime.getURL('ui/dist/assets/index.css'); // Adjust the path if needed
         document.head.appendChild(link);
-
     }
 }
 
@@ -113,13 +107,7 @@ function handleCloseModalMessage() {
 }
 
 // Function to get the query selector of the selected element
-// TODO: test this rigorously
 function getQuerySelector(element) {
-    return getUniqueSelector(element);
-}
-
-
-function getUniqueSelector(element) {
     if (!(element instanceof Element)) {
         throw new Error('The provided input is not a DOM element');
     }
@@ -137,9 +125,11 @@ function getUniqueSelector(element) {
         while (element.nodeType === Node.ELEMENT_NODE) {
             let selector = element.nodeName.toLowerCase();
             if (element.className && typeof element.className === 'string') {
-                selector += `.${Array.from(element.classList)
+                const classSelector = `${Array.from(element.classList)
+                    .filter(i => i.trim().length > 0)
                     .map(i => CSS.escape(i))
                     .join('.')}`;
+                classSelector.length > 0 && (selector += `.${classSelector}`);
             }
             if (element !== document.documentElement) {
                 let sibling = element;
