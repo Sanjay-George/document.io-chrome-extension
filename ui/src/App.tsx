@@ -14,7 +14,6 @@ function App() {
     const [show, setShow] = useState(false);
     const [annotationMeta, setAnnotationMeta] = useState(null as any);
 
-
     const handleOpenModalMessage = async (event: MessageEvent) => {
         // query selector will be an input
         // Fetch annotations from the server
@@ -80,10 +79,11 @@ function App() {
                 console.error(error);
             }
         }
+        setAnnotation('');
+        setAnnotationMeta(null);
         setShow(false);
         postMessage({ action: 'closeModal' });
     }
-
 
     window.onmessage = (event) => {
         const { action } = event.data;

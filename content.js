@@ -2,13 +2,14 @@ let selectedElement = null;
 let isModalOpen = false;
 
 const MODAL_ROOT_ID = 'dce-modal-root';
-// const MODAL_SAVE_BUTTON_ID = 'dce-modal-save';
-// const MODAL_CLOSE_BUTTON_ID = 'dce-modal-close';
 
 // Add an event listener to highlight elements on mouse hover
 document.addEventListener("mouseover", (event) => {
     if (isModalOpen) {
         return;
+    }
+    if (!event.target.dataset.originalOutline) {
+        event.target.dataset.originalOutline = event.target.style.outline;
     }
     event.target.style.outline = "2px solid red";
 });
@@ -18,7 +19,7 @@ document.addEventListener("mouseout", (event) => {
     if (isModalOpen) {
         return;
     }
-    event.target.style.outline = "none";
+    event.target.style.outline = event.target.dataset.originalOutline;
 });
 
 
@@ -54,6 +55,22 @@ if (document.readyState !== 'complete') {
 function handlePageLoad() {
     console.log('Page loaded');
     injectModal();
+    highlightAnnotatedElements();
+}
+
+async function highlightAnnotatedElements() {
+    const pageId = getPageId();
+    const annotations = await fetch(`http://localhost:5000/pages/${pageId}/annotations`);
+    const annotationsJson = await annotations.json();
+
+    for (let annotation of annotationsJson) {
+        const { _id: id, target } = annotation;
+        const element = document.querySelector(target);
+        if (element) {
+            element.style.outline = '2px solid blue';
+            element.dataset.annotationId = id;
+        }
+    }
 }
 
 
@@ -68,13 +85,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // Open a resizable modal at the bottom of the page
 function openModal({ querySelector }) {
     isModalOpen = true;
-    console.log('Posting a message to open the modal');
 
     // Get the pageId from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const pageId = urlParams.get('pageId');
+    const pageId = getPageId();
     const url = window.location.origin + window.location.pathname;
-    postMessage({ action: 'openModal', target: querySelector, url, pageId });
+    const element = document.querySelector(querySelector);
+    const annotationId = element.dataset.annotationId || null;
+
+    postMessage({
+        action: 'openModal',
+        target: querySelector,
+        annotationId,
+        url,
+        pageId,
+    });
+}
+
+function getPageId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('pageId');
 }
 
 
