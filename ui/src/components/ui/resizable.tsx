@@ -33,7 +33,7 @@ const ResizableHandle = ({
     {...props}
   >
     {withHandle && (
-      <div className="z-10 flex h-28 w-5 rounded-3xl items-center justify-center border bg-border bg-emerald-700 text-white">
+      <div className="z-10 flex h-20 w-3 rounded-3xl items-center justify-center border bg-border bg-emerald-700 text-white">
         <DragHandleDots2Icon className="h-4 w-4" />
       </div>
     )}
