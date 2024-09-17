@@ -7,7 +7,7 @@ const HOVERD_ELEMENT_CLASS = 'dce-hovered-element';
 const ANNOTATED_ELEMENT_CLASS = 'dce-annotated-element';
 
 // TODO: handle incremental client side rendering (HTML below the viewport is loaded later, so annotations are not highlighted)
-
+// TODO: If pageID is null, deactivate the extension
 
 // Add an event listener to highlight elements on mouse hover
 document.addEventListener("mouseover", (event) => {
@@ -77,6 +77,11 @@ if (document.readyState !== 'complete') {
 
 function handlePageLoad() {
     console.log('Page loaded');
+
+    const pageId = getPageId();
+    if (!pageId) {
+        return;
+    }
     injectModal();
     highlightAnnotatedElements();
 }
@@ -125,10 +130,17 @@ function openModal({ querySelector }) {
 }
 
 function getPageId() {
-    // TODO: Store pageId in session storage or local storage to handle 
-    //  page refresh and navigation
+    let pageId = sessionStorage.getItem('dce_pageId');
+    if (pageId && pageId.length > 0) {
+        return pageId;
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('pageId');
+    pageId = urlParams.get('pageId');
+    if (pageId) {
+        sessionStorage.setItem('dce_pageId', pageId);
+    }
+    return pageId;
 }
 
 
