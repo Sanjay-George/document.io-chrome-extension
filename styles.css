@@ -1,5 +1,6 @@
 .dce-annotated-element {
     border: 2px solid rgba(0, 150, 255, 0.5) !important;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 .dce-annotated-element:hover {
@@ -9,6 +10,8 @@
 
 .dce-hovered-element {
     border: 1px solid rgba(255, 0, 0, 0.5) !important;
+    transition: box-shadow 0.3s ease-in-out;
+
 }
 
 .dce-hovered-element:hover {
