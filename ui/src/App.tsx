@@ -36,6 +36,8 @@ function App() {
     }
 
     const handleClose = () => {
+        setAnnotation('');
+        setAnnotationMeta(null);
         setShow(false);
         postMessage({ action: 'closeModal' });
     }

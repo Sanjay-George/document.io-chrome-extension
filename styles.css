@@ -1,0 +1,17 @@
+.dce-annotated-element {
+    border: 2px solid rgba(0, 150, 255, 0.5) !important;
+}
+
+.dce-annotated-element:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 150, 255, 0.5),
+        0 4px 6px -4px rgb(0, 150, 255, 0.5) !important;
+}
+
+.dce-hovered-element {
+    border: 1px solid rgba(255, 0, 0, 0.5) !important;
+}
+
+.dce-hovered-element:hover {
+    box-shadow: 0 10px 15px -3px rgba(255, 0, 0, 0.5),
+        0 4px 6px -4px rgba(255, 0, 0, 0.5) !important;
+}

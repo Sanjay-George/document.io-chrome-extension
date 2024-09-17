@@ -1,30 +1,53 @@
 let selectedElement = null;
 let isModalOpen = false;
+let isContextMenuOpen = false;
 
 const MODAL_ROOT_ID = 'dce-modal-root';
+const HOVERD_ELEMENT_CLASS = 'dce-hovered-element';
+const ANNOTATED_ELEMENT_CLASS = 'dce-annotated-element';
+
+// TODO: handle incremental client side rendering (HTML below the viewport is loaded later, so annotations are not highlighted)
+
 
 // Add an event listener to highlight elements on mouse hover
 document.addEventListener("mouseover", (event) => {
-    if (isModalOpen) {
+    if (isModalOpen || isContextMenuOpen) {
         return;
     }
-    if (!event.target.dataset.originalOutline) {
-        event.target.dataset.originalOutline = event.target.style.outline;
+    if (event.target.classList.contains(ANNOTATED_ELEMENT_CLASS)) {
+        return;
     }
-    event.target.style.outline = "2px solid red";
+    event.target.classList.add(HOVERD_ELEMENT_CLASS);
 });
 
 // Remove the highlight when the mouse moves away
 document.addEventListener("mouseout", (event) => {
+    if (isModalOpen || isContextMenuOpen) {
+        return;
+    }
+    event.target.classList.remove(HOVERD_ELEMENT_CLASS);
+});
+
+
+document.addEventListener("mousedown", (event) => {
+    // set context menu open to false if the user clicks outside the context menu
+    if (isContextMenuOpen) {
+        isContextMenuOpen = false;
+        if (selectedElement) {
+            selectedElement.classList.remove(HOVERD_ELEMENT_CLASS);
+        }
+        return;
+    }
     if (isModalOpen) {
         return;
     }
-    event.target.style.outline = event.target.dataset.originalOutline;
+
 });
 
 
 // Right-click context menu handler
 document.addEventListener('contextmenu', function (e) {
+    isContextMenuOpen = true;
     selectedElement = e.target;
 
     console.log();
@@ -67,7 +90,7 @@ async function highlightAnnotatedElements() {
         const { _id: id, target } = annotation;
         const element = document.querySelector(target);
         if (element) {
-            element.style.outline = '2px solid blue';
+            element.classList.add(ANNOTATED_ELEMENT_CLASS);
             element.dataset.annotationId = id;
         }
     }
@@ -102,6 +125,8 @@ function openModal({ querySelector }) {
 }
 
 function getPageId() {
+    // TODO: Store pageId in session storage or local storage to handle 
+    //  page refresh and navigation
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('pageId');
 }
@@ -133,6 +158,7 @@ function injectModal() {
 
 function handleCloseModalMessage() {
     isModalOpen = false;
+    selectedElement.classList.remove(HOVERD_ELEMENT_CLASS);
 }
 
 // Function to get the query selector of the selected element
