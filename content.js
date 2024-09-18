@@ -6,9 +6,7 @@ const MODAL_ROOT_ID = 'dce-modal-root';
 const HOVERD_ELEMENT_CLASS = 'dce-hovered-element';
 const ANNOTATED_ELEMENT_CLASS = 'dce-annotated-element';
 
-// TODO: handle incremental client side rendering (HTML below the viewport is loaded later, so annotations are not highlighted)
 // TODO: If pageID is null, deactivate the extension
-
 document.addEventListener("mouseover", (event) => {
     if (isModalOpen || isContextMenuOpen) {
         return;
@@ -59,6 +57,13 @@ window.onmessage = (event) => {
     if (action === 'closeModal') {
         handleCloseModalMessage();
     }
+    else if (action === 'deleteAnnotation') {
+        handleDeleteAnnotationMessage(event.data.annotationId);
+    }
+    else if (action === 'saveAnnotation') {
+        handleSaveAnnotationMessage(event.data.annotationId);
+    }
+
 };
 
 // Listen for the messages from the background script
@@ -76,9 +81,3 @@ if (document.readyState !== 'complete') {
 } else {
     handlePageLoad();
 }
-
-// Listen for scroll events
-window.addEventListener('scroll', () => {
-    // Check for new elements added to the body
-    observer.observe(document.body, { childList: true, subtree: true });
-});

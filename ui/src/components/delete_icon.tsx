@@ -1,4 +1,4 @@
-export default function SaveIcon() {
+export default function DeleteIcon() {
     return (
         <svg
             className="w-5 h-5"
@@ -14,9 +14,10 @@ export default function SaveIcon() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M20 6 9 17 4 12"
+                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
             />
         </svg>
+
 
     )
 }

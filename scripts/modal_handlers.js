@@ -23,6 +23,19 @@ function handleCloseModalMessage() {
     selectedElement.classList.remove(HOVERD_ELEMENT_CLASS);
 }
 
+function handleDeleteAnnotationMessage(annotationId) {
+    selectedElement.classList.remove(ANNOTATED_ELEMENT_CLASS);
+    selectedElement.classList.remove(HOVERD_ELEMENT_CLASS);
+    isModalOpen = false;
+}
+
+function handleSaveAnnotationMessage(annotationId) {
+    selectedElement.classList.remove(HOVERD_ELEMENT_CLASS);
+    selectedElement.classList.add(ANNOTATED_ELEMENT_CLASS);
+    selectedElement.dataset.annotationId = annotationId;
+    isModalOpen = false;
+}
+
 function injectModal() {
     // Create the modal container if it doesn't exist
     if (!document.getElementById(MODAL_ROOT_ID)) {
