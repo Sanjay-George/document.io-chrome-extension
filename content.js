@@ -5,13 +5,15 @@ let isContextMenuOpen = false;
 const MODAL_ROOT_ID = 'dce-modal-root';
 const HOVERD_ELEMENT_CLASS = 'dce-hovered-element';
 const ANNOTATED_ELEMENT_CLASS = 'dce-annotated-element';
+const ANNOTATED_ELEMENT_ICON_CLASS = 'dce-annotated-element-icon';
 
 // TODO: If pageID is null, deactivate the extension
 document.addEventListener("mouseover", (event) => {
     if (isModalOpen || isContextMenuOpen) {
         return;
     }
-    if (event.target.classList.contains(ANNOTATED_ELEMENT_CLASS)) {
+    if (event.target.classList.contains(ANNOTATED_ELEMENT_CLASS)
+        || event.target.classList.contains(ANNOTATED_ELEMENT_ICON_CLASS)) {
         return;
     }
     event.target.classList.add(HOVERD_ELEMENT_CLASS);
