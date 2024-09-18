@@ -18,6 +18,9 @@
                 "<all_urls>"
             ],
             "js": [
+                "scripts/modal_handlers.js",
+                "scripts/page_handlers.js",
+                "scripts/utils.js",
                 "content.js"
             ],
             "css": [
