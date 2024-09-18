@@ -78,3 +78,20 @@ async function getAnnotations(pageId) {
     const response = await fetch(`http://localhost:5000/pages/${pageId}/annotations`);
     return response.json();
 }
+
+// debounce function
+function debounce(func, wait, immediate) {
+    let timeout;
+    return function () {
+        const context = this;
+        const args = arguments;
+        const later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
