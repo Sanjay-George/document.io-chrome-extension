@@ -2,7 +2,8 @@ async function highlightAnnotatedElements(annotations) {
     for (let annotation of annotations) {
         const { _id: id, target } = annotation;
         const element = document.querySelector(target);
-        if (element && !element.classList.contains(ANNOTATED_ELEMENT_CLASS)) {
+
+        if (element && !isAnnotated(element)) {
             element.classList.add(ANNOTATED_ELEMENT_CLASS);
             element.dataset.annotationId = id;
 
@@ -10,30 +11,42 @@ async function highlightAnnotatedElements(annotations) {
             const icon = document.createElement('div');
             icon.innerHTML = view_icon_svg;
             icon.classList.add(ANNOTATED_ELEMENT_ICON_CLASS);
-            icon.onclick = () => {
+            icon.onclick = (e) => {
+                e.preventDefault();
                 console.log('View annotation:', annotation);
             };
-            icon.style.position = 'absolute';
-            icon.style.top = '0';
-            icon.style.right = '0';
             // Assign height and width based on element size
             icon.style.height = `min(20px, ${element.offsetHeight - 5}px)`;
             icon.style.width = `min(20px, ${element.offsetHeight - 5}px)`;
-            icon.style.padding = '2px';
-            icon.style.backgroundColor = 'rgba(0, 150, 255, 0.5)';
-            icon.style.color = 'white';
+
 
             element.appendChild(icon);
-            element.style.position = 'relative';
+            const elementStyle = window.getComputedStyle(element);
+            if (!elementStyle.position.length || elementStyle.position === 'static') {
+                element.style.position = 'relative';
+            }
         }
     }
 }
 
+function isAnnotated(element) {
+    return element.classList.contains(ANNOTATED_ELEMENT_CLASS) && hasViewIcon(element);
+}
+
+function hasViewIcon(element) {
+    if (!element.children || element.children.length === 0) {
+        return false;
+    }
+    const lastChild = element.children[element.children.length - 1];
+    return lastChild.tagName.toLowerCase() === 'div'
+        && lastChild.classList.contains(ANNOTATED_ELEMENT_ICON_CLASS);
+
+}
+
 const view_icon_svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 3.75H6A2.25 2.25 0 0 0 3.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0 1 20.25 6v1.5m0 9V18A2.25 2.25 0 0 1 18 20.25h-1.5m-9 0H6A2.25 2.25 0 0 1 3.75 18v-1.5M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+</svg>
 `;
 
 // Function to get the query selector of the selected element
