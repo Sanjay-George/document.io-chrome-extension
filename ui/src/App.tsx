@@ -19,17 +19,23 @@ function App() {
         const { annotationId, target, url, pageId } = event.data;
         console.log('Open modal message parameters:', { annotationId, target, url, pageId });
 
+        let data = null;
         if (annotationId) {
             try {
                 const res = await fetch(`http://localhost:5000/annotations/${annotationId}`);
-                const data = await res.json();
+                data = await res.json();
                 data && setAnnotation(data.value);
             }
             catch (error) {
                 console.error(error);
             }
         }
-        setAnnotationMeta({ id: annotationId, target, url, pageId } as any);
+        setAnnotationMeta({
+            id: annotationId,
+            target: target || data.target,
+            url: url || data.url,
+            pageId: pageId || data.pageId,
+        } as any);
         setShow(true);
     }
 

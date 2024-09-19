@@ -72,7 +72,7 @@ window.onmessage = (event) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'annotate') {
         const querySelector = getQuerySelector(selectedElement);
-        openModal({ querySelector });
+        openModal(querySelector);
     }
 });
 

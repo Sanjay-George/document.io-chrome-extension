@@ -1,18 +1,25 @@
 // Open a resizable modal at the bottom of the page
-function openModal({ querySelector }) {
+function openModal(querySelector, annotationId = null) {
     isModalOpen = true;
     isContextMenuOpen = false;
+
+    if (annotationId) {
+        postMessage({
+            action: 'openModal',
+            annotationId,
+        });
+        return;
+    }
 
     // Get the pageId from the URL
     const pageId = getPageId();
     const url = window.location.origin + window.location.pathname;
     const element = document.querySelector(querySelector);
-    const annotationId = element.dataset.annotationId || null;
 
     postMessage({
         action: 'openModal',
         target: querySelector,
-        annotationId,
+        annotationId: annotationId || element.dataset.annotationId || null,
         url,
         pageId,
     });

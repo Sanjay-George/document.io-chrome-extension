@@ -13,12 +13,11 @@ async function highlightAnnotatedElements(annotations) {
             icon.classList.add(ANNOTATED_ELEMENT_ICON_CLASS);
             icon.onclick = (e) => {
                 e.preventDefault();
-                console.log('View annotation:', annotation);
+                openModal(getQuerySelector(element), id);
             };
             // Assign height and width based on element size
             icon.style.height = `min(20px, ${element.offsetHeight - 5}px)`;
             icon.style.width = `min(20px, ${element.offsetHeight - 5}px)`;
-
 
             element.appendChild(icon);
             const elementStyle = window.getComputedStyle(element);
