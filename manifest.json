@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Ping and Highlight Extension",
+    "name": "Document.io Companion",
     "version": "1.0",
-    "description": "Sends a ping request and highlights elements on hover.",
+    "description": "The companion extension for Document.io which allows you to manage annotations on a page",
     "permissions": [
         "contextMenus",
         "tabs",

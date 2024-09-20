@@ -92,6 +92,7 @@ function App() {
         }
         else {
             // Insert annotation
+            // TODO: Read server URL from env. 
             try {
                 await fetch(`http://localhost:5000/annotations`, {
                     method: 'POST',
@@ -127,7 +128,9 @@ function App() {
                 <ResizableHandle withHandle className='overlay-handle hover:bg-emerald-800' />
                 <ResizablePanel className='overlay-panel' minSize={25}>
                     <div style={{ height: '100%', width: '100%' }} className='p-8'>
-                        <MDEditor height='90%' value={annotation} onChange={setAnnotation as any} preview='live' />
+                        <MDEditor height='90%'
+                            value={annotation} onChange={setAnnotation as any}
+                            preview='live' />
                         <div className='flex justify-end space-x-2'>
                             <button onClick={handleDelete} className='btn mt-2 mb-2 bg-red-500 hover:bg-red-600 text-white text-sm mr-10'><DeleteIcon /></button>
                             <button onClick={handleSave} id='dce-modal-save' className='btn mt-2 mb-2  bg-emerald-700 text-white'>
