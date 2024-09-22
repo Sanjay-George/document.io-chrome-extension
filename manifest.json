@@ -7,8 +7,12 @@
         "contextMenus",
         "tabs",
         "activeTab",
-        "scripting"
+        "scripting",
+        "storage"
     ],
+    "action": {
+        "default_popup": "popup/popup.html"
+    },
     "background": {
         "service_worker": "background.js"
     },
@@ -31,9 +35,6 @@
     "host_permissions": [
         "<all_urls>"
     ],
-    "action": {
-        "default_popup": ""
-    },
     "web_accessible_resources": [
         {
             "resources": [

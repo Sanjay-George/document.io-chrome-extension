@@ -1,6 +1,7 @@
 let selectedElement = null;
 let isModalOpen = false;
 let isContextMenuOpen = false;
+let SERVER_URL = 'http://localhost:5000';
 
 const MODAL_ROOT_ID = 'dce-modal-root';
 const HOVERD_ELEMENT_CLASS = 'dce-hovered-element';

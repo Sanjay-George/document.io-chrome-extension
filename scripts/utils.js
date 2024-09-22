@@ -6,6 +6,7 @@ async function highlightAnnotatedElements(annotations) {
         if (element && !isAnnotated(element)) {
             element.classList.add(ANNOTATED_ELEMENT_CLASS);
             element.dataset.annotationId = id;
+            const elementStyle = window.getComputedStyle(element);
 
             // Add view icon
             const icon = document.createElement('div');
@@ -16,11 +17,12 @@ async function highlightAnnotatedElements(annotations) {
                 openModal(getQuerySelector(element), id);
             };
             // Assign height and width based on element size
-            icon.style.height = `min(20px, ${element.offsetHeight - 5}px)`;
+            icon.style.height = `min(20px, ${element.height - 5}px)`;
             icon.style.width = `min(20px, ${element.offsetHeight - 5}px)`;
+            icon.style.minHeight = `15px`;
+            icon.style.minWidth = `15px`;
 
             element.appendChild(icon);
-            const elementStyle = window.getComputedStyle(element);
             if (!elementStyle.position.length || elementStyle.position === 'static') {
                 element.style.position = 'relative';
             }
@@ -86,7 +88,6 @@ function getQuerySelector(element) {
             path.unshift(selector);
             element = element.parentNode;
 
-            // TODO: check performance impact.
             if (document.querySelectorAll(path.join(' > ')).length === 1) {
                 break;
             }
@@ -114,7 +115,8 @@ function getPageId() {
 
 // TODO: URL should be configurable from the extension settings
 async function getAnnotations(pageId) {
-    const response = await fetch(`http://localhost:5000/pages/${pageId}/annotations`);
+    getServerUrl();
+    const response = await fetch(`${SERVER_URL}/pages/${pageId}/annotations`);
     return response.json();
 }
 
@@ -133,4 +135,17 @@ function debounce(func, wait, immediate) {
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
     };
+}
+
+
+// TODO: Improve this to avoid global variable and use callback
+function getServerUrl() {
+    chrome.storage.sync.get('serverUrl', (data) => {
+        if (!data.serverUrl) {
+            console.error('Server URL not found in storage.');
+            return;
+        }
+        const url = data.serverUrl;
+        SERVER_URL = url.endsWith('/') ? url.slice(0, -1) : url;
+    });
 }
