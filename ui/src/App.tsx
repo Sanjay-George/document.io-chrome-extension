@@ -10,19 +10,21 @@ import CloseIcon from './components/close_icon';
 import SaveIcon from './components/save_icon';
 import DeleteIcon from './components/delete_icon';
 
+let API_URL = '';
+
 function App() {
     const [annotation, setAnnotation] = useState('');
     const [show, setShow] = useState(false);
     const [annotationMeta, setAnnotationMeta] = useState(null as any);
 
     const handleOpenModalMessage = async (event: MessageEvent) => {
-        const { annotationId, target, url, pageId } = event.data;
-        console.log('Open modal message parameters:', { annotationId, target, url, pageId });
-
+        const { annotationId, target, url, pageId, serverUrl } = event.data;
+        console.log('Open modal message parameters:', { annotationId, target, url, pageId, serverUrl });
+        API_URL = serverUrl;
         let data = null;
         if (annotationId) {
             try {
-                const res = await fetch(`http://localhost:5000/annotations/${annotationId}`);
+                const res = await fetch(`${API_URL}/annotations/${annotationId}`);
                 data = await res.json();
                 data && setAnnotation(data.value);
             }
@@ -53,7 +55,7 @@ function App() {
     const handleDelete = async () => {
         if (annotationMeta?.id) {
             try {
-                await fetch(`http://localhost:5000/annotations/${annotationMeta.id}`, {
+                await fetch(`${API_URL}/annotations/${annotationMeta.id}`, {
                     method: 'DELETE',
                 });
             }
@@ -78,7 +80,7 @@ function App() {
             // Update annotation
             annotationObj['id'] = annotationMeta.id;
             try {
-                await fetch(`http://localhost:5000/annotations/${annotationMeta.id}`, {
+                await fetch(`${API_URL}/annotations/${annotationMeta.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -94,7 +96,7 @@ function App() {
             // Insert annotation
             // TODO: Read server URL from env. 
             try {
-                await fetch(`http://localhost:5000/annotations`, {
+                await fetch(`${API_URL}/annotations`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

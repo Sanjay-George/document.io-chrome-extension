@@ -113,7 +113,6 @@ function getPageId() {
     return pageId;
 }
 
-// TODO: URL should be configurable from the extension settings
 async function getAnnotations(pageId) {
     getServerUrl();
     const response = await fetch(`${SERVER_URL}/pages/${pageId}/annotations`);

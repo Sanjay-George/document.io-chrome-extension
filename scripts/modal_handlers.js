@@ -7,6 +7,7 @@ function openModal(querySelector, annotationId = null) {
         postMessage({
             action: 'openModal',
             annotationId,
+            serverUrl: SERVER_URL,
         });
         return;
     }
@@ -22,6 +23,7 @@ function openModal(querySelector, annotationId = null) {
         annotationId: annotationId || element.dataset.annotationId || null,
         url,
         pageId,
+        serverUrl: SERVER_URL,
     });
 }
 
