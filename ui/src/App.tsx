@@ -94,7 +94,6 @@ function App() {
         }
         else {
             // Insert annotation
-            // TODO: Read server URL from env. 
             try {
                 await fetch(`${API_URL}/annotations`, {
                     method: 'POST',
