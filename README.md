@@ -15,7 +15,6 @@ The extension ensures secure and localized interaction with the web page, keepin
 - **Edit and create annotations** in real-time.
 - **Secure and localized** – all interactions are processed safely within your browser.
 
-<br />
 
 
 ## 📦 Getting Started
@@ -43,14 +42,13 @@ Setting up the extension is easy and quick. Follow these steps to install it loc
 5. **Verify Installation**:
    - The extension should now be visible in your Chrome toolbar, ready to work with the application.
 
-<br />
 
 ## Usage
 Once the extension is installed, simply navigate to any page where Document.io annotations are supported. The extension will automatically inject the necessary tools, allowing you to view, edit, and manage your annotations without interruption.
 
 ### Additional Usage Notes
 - The extension only activates on click, so it is recommended to pin it in your Chrome toolbar for quick access.
-- Annotations only work if the tab was opened from the main Document.io application and are valid for the current session. If the same website is manually opened in a new tab, annotations cannot be interacted with.
+- **Annotations only work if the tab was opened from the main Document.io application** and are valid for the current session. If the same website is manually opened in a new tab, annotations cannot be interacted with.
 - The API server URL can be updated by clicking the extension icon. The default API server URL is http://localhost:5000, but this can be changed if needed.
 
 
