@@ -51,10 +51,22 @@ Setting up the extension is easy and quick. Follow these steps to install it loc
    - The extension should now be visible in your Chrome toolbar, ready to work with the application.
 
 
-## Usage
+## 🛠️ Usage
 Once the extension is installed, simply navigate to any page where Document.io annotations are supported. The extension will automatically inject the necessary tools, allowing you to view, edit, and manage your annotations without interruption.
 
-### Additional Usage Notes
+### Adding or Editing Annotations:
+
+- Hover over the element you want to annotate. The element will be highlighted with a red border.
+- Right-click on the element, and from the context menu, select the "Add / Edit Annotation" option. This will open a popup where you can create or modify the annotation.
+
+### Viewing and Managing Annotations:
+
+- Annotated elements are highlighted with a blue border and a view icon.
+- Click the view icon to see or edit the existing annotation.
+- Alternatively, you can hover over the element, right-click, and select "Add / Edit Annotation" from the context menu to update the annotation.
+
+
+## 🎶 Additional Notes
 - **Annotations only work if the tab was opened from the main Document.io application** and are valid for the current session / tab. If the same website is manually opened in a new tab, annotations cannot be interacted with.
 - The API server URL can be updated by clicking the extension icon. The default API server URL is http://localhost:5000, but this can be changed if needed.
 
