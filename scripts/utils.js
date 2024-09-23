@@ -141,7 +141,6 @@ function debounce(func, wait, immediate) {
 function getServerUrl() {
     chrome.storage.sync.get('serverUrl', (data) => {
         if (!data.serverUrl) {
-            console.error('Server URL not found in storage.');
             return;
         }
         const url = data.serverUrl;

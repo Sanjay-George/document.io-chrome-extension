@@ -8,50 +8,23 @@ const HOVERD_ELEMENT_CLASS = 'dce-hovered-element';
 const ANNOTATED_ELEMENT_CLASS = 'dce-annotated-element';
 const ANNOTATED_ELEMENT_ICON_CLASS = 'dce-annotated-element-icon';
 
-document.addEventListener("mouseover", (event) => {
-    if (isModalOpen || isContextMenuOpen) {
-        return;
-    }
-    if (event.target.classList.contains(ANNOTATED_ELEMENT_CLASS)
-        || event.target.classList.contains(ANNOTATED_ELEMENT_ICON_CLASS)) {
-        return;
-    }
-    event.target.classList.add(HOVERD_ELEMENT_CLASS);
-});
 
-document.addEventListener("mouseout", (event) => {
-    if (isModalOpen || isContextMenuOpen) {
-        return;
-    }
-    event.target.classList.remove(HOVERD_ELEMENT_CLASS);
-});
+// Create a MutationObserver to watch for changes in the body
+const observer = new MutationObserver(debounce(handleMutations, 200));
 
-document.addEventListener("mousedown", (event) => {
-    // set context menu open to false if the user clicks outside the context menu
-    if (isContextMenuOpen) {
-        isContextMenuOpen = false;
-        if (!selectedElement) {
-            return;
-        }
-        return selectedElement.classList.remove(HOVERD_ELEMENT_CLASS);
-    }
-    if (isModalOpen) {
-        return;
-    }
-});
+function addEventListeners() {
+    document.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener("mouseout", handleMouseOut);
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener('contextmenu', handleContextMenuClick);
+}
 
-document.addEventListener('contextmenu', function (e) {
-    isContextMenuOpen = true;
-    selectedElement = e.target;
-
-    console.log();
-    console.log('User selected element:', selectedElement);
-    const qs = getQuerySelector(selectedElement);
-    console.log('Query selector:', qs);
-    console.log('Element recorded:', document.querySelector(qs));
-    console.log();
-
-});
+function removeEventListeners() {
+    document.removeEventListener("mouseover", handleMouseOver);
+    document.removeEventListener("mouseout", handleMouseOut);
+    document.removeEventListener("mousedown", handleMouseDown);
+    document.removeEventListener('contextmenu', handleContextMenuClick);
+}
 
 // Listen for messages from the React component
 window.onmessage = (event) => {
@@ -65,7 +38,6 @@ window.onmessage = (event) => {
     else if (action === 'saveAnnotation') {
         handleSaveAnnotationMessage(event.data.annotationId);
     }
-
 };
 
 // Listen for the messages from the background script

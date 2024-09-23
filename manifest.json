@@ -24,7 +24,7 @@
             "js": [
                 "scripts/utils.js",
                 "scripts/modal_handlers.js",
-                "scripts/page_handlers.js",
+                "scripts/event_handlers.js",
                 "content.js"
             ],
             "css": [

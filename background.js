@@ -8,6 +8,7 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
+
 // Access the URL of the active tab
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     let currentTab = tabs[0]; // Get the active tab
