@@ -4,7 +4,7 @@ This companion Chrome extension enables users to **view** and **edit annotations
 
 ## 🎯 Motivation
 
-Many websites implement strict CSP rules that prevent loading external resources, such as iframes, directly into their pages. This makes it difficult to integrate the annotation interface into the main Document.io platform. By using this Chrome extension, users can circumvent these restrictions and still annotate content directly on the pages they visit. 
+Many websites implement strict CSP rules that prevent loading external resources or scripts directly into their pages. This makes it difficult to integrate the annotation interface into the main Document.io platform. By using this Chrome extension, users can circumvent these restrictions and still annotate content directly on the pages they visit. 
 
 The extension ensures secure and localized interaction with the web page, keeping your browsing experience safe and private.
 
@@ -30,16 +30,23 @@ Setting up the extension is easy and quick. Follow these steps to install it loc
 1. **Download or Clone the Extension**:
    - Clone the repository or download this repo.
 
-2. **Open Chrome Extensions Page**:
+2. **Build UI components**
+
+   ```bash
+   cd ui
+   npm run build
+   ```
+
+3. **Open Chrome Extensions Page**:
    - In Chrome, navigate to `chrome://extensions/` or go to the menu: `More Tools` → `Extensions`.
 
-3. **Enable Developer Mode**:
+4. **Enable Developer Mode**:
    - Toggle the "Developer mode" switch in the top-right corner of the Extensions page.
 
-4. **Load Unpacked Extension**:
+5. **Load Unpacked Extension**:
    - Click on the "Load unpacked" button and point it to the root folder of this project.
 
-5. **Verify Installation**:
+6. **Verify Installation**:
    - The extension should now be visible in your Chrome toolbar, ready to work with the application.
 
 
