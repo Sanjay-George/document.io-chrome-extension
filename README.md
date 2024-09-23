@@ -1,6 +1,6 @@
 # Document.io - Companion Chrome Extension
 
-This companion Chrome extension enables users to **view** and **edit annotations** directly on web pages. Due to certain websites’ strong Content Security Policies (CSP), this extension is required to bypass these restrictions, allowing the annotation interface to work seamlessly with the main Document.io application.
+This companion Chrome extension enables users to **view** and **edit annotations** directly on web pages. Due to certain websites’ strong Content Security Policies (CSP), this extension is required to bypass these restrictions, allowing the annotation interface to work seamlessly with the main [Document.io application](https://github.com/Sanjay-George/document.io).
 
 ## 🎯 Motivation
 
@@ -67,7 +67,7 @@ Once the extension is installed, simply navigate to any page where Document.io a
 
 
 ## 🎶 Additional Notes
-- **Annotations only work if the tab was opened from the main Document.io application** and are valid for the current session / tab. If the same website is manually opened in a new tab, annotations cannot be interacted with.
+- **Annotations only work if the tab was opened from the[ main Document.io application](https://github.com/Sanjay-George/document.io)** and are valid for the current session / tab. If the same website is manually opened in a new tab, annotations cannot be interacted with.
 - The API server URL can be updated by clicking the extension icon. The default API server URL is http://localhost:5000, but this can be changed if needed.
 
 ### How It Works
