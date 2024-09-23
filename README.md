@@ -29,7 +29,7 @@ Setting up the extension is easy and quick. Follow these steps to install it loc
 ### Steps to Install
 
 1. **Download or Clone the Extension**:
-   - Clone the repository or download the extension folder located at `chrome-extension/` within the project.
+   - Clone the repository or download this repo.
 
 2. **Open Chrome Extensions Page**:
    - In Chrome, navigate to `chrome://extensions/` or go to the menu: `More Tools` → `Extensions`.
@@ -38,7 +38,7 @@ Setting up the extension is easy and quick. Follow these steps to install it loc
    - Toggle the "Developer mode" switch in the top-right corner of the Extensions page.
 
 4. **Load Unpacked Extension**:
-   - Click on the "Load unpacked" button and select the `chrome-extension/` folder from your downloaded project.
+   - Click on the "Load unpacked" button and point it to the root folder of this project.
 
 5. **Verify Installation**:
    - The extension should now be visible in your Chrome toolbar, ready to work with the application.
