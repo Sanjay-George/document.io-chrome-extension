@@ -10,7 +10,8 @@ const ANNOTATED_ELEMENT_ICON_CLASS = 'dce-annotated-element-icon';
 
 
 // Create a MutationObserver to watch for changes in the body
-const observer = new MutationObserver(debounce(handleMutations, 200));
+const observer =
+    new MutationObserver(debounce(handleMutations, 200));
 
 function addEventListeners() {
     document.addEventListener("mouseover", handleMouseOver);

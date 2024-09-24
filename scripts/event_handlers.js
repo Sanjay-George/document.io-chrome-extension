@@ -20,19 +20,16 @@ const handleMouseDown = (event) => {
     // set context menu open to false if the user clicks outside the context menu
     if (isContextMenuOpen) {
         isContextMenuOpen = false;
-        if (!selectedElement) {
-            return;
-        }
-        return selectedElement.classList.remove(HOVERD_ELEMENT_CLASS);
+        return selectedElement?.classList?.remove(HOVERD_ELEMENT_CLASS);
     }
     if (isModalOpen) {
         return;
     }
 };
 
-const handleContextMenuClick = (e) => {
+const handleContextMenuClick = (event) => {
     isContextMenuOpen = true;
-    selectedElement = e.target;
+    selectedElement = event.target;
 
     console.log('User selected element:', selectedElement);
     const qs = getQuerySelector(selectedElement);
@@ -48,15 +45,15 @@ async function handlePageLoad() {
         return;
     }
     injectModal();
-    observer.observe(
-        document.body,
-        { childList: true, subtree: true }
-    );
     addEventListeners();
     const annotations = await getAnnotations(pageId);
     await highlightAnnotatedElements(annotations);
-
-    observer.observe(document.body, { childList: true, subtree: true });
+    if (observer) {
+        observer.observe(
+            document.body,
+            { childList: true, subtree: true }
+        );
+    }
 }
 
 async function handleMutations(mutationsList, observer) {
