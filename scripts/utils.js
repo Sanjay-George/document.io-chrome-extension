@@ -21,6 +21,7 @@ async function highlightAnnotatedElements(annotations) {
             icon.style.width = `min(20px, ${element.offsetHeight - 5}px)`;
             icon.style.minHeight = `15px`;
             icon.style.minWidth = `15px`;
+            icon.style.zIndex = getMaxZIndexOfChildren(element) + 1;
 
             element.appendChild(icon);
             if (!elementStyle.position.length || elementStyle.position === 'static') {
@@ -28,6 +29,18 @@ async function highlightAnnotatedElements(annotations) {
             }
         }
     }
+}
+
+function getMaxZIndexOfChildren(element) {
+    const children = element.children;
+    let maxZIndex = 0;
+    for (let i = 0; i < children.length; i++) {
+        const zIndex = window.getComputedStyle(children[i]).zIndex;
+        if (zIndex && zIndex !== 'auto') {
+            maxZIndex = Math.max(maxZIndex, parseInt(zIndex));
+        }
+    }
+    return maxZIndex;
 }
 
 function isAnnotated(element) {
