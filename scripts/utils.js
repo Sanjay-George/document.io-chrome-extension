@@ -14,6 +14,7 @@ async function highlightAnnotatedElements(annotations) {
             icon.classList.add(ANNOTATED_ELEMENT_ICON_CLASS);
             icon.onclick = (e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 openModal(getQuerySelector(element), id);
             };
             // Assign height and width based on element size
