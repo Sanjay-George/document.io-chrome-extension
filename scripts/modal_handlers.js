@@ -29,6 +29,9 @@ function openModal(querySelector, annotationId = null) {
 
 function handleCloseModalMessage() {
     isModalOpen = false;
+    if (!selectedElement) {
+        return;
+    }
     selectedElement.classList.remove(HOVERD_ELEMENT_CLASS);
 }
 
