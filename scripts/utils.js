@@ -130,7 +130,17 @@ function getPageId() {
 async function getAnnotations(pageId) {
     getServerUrl();
     const response = await fetch(`${SERVER_URL}/pages/${pageId}/annotations`);
-    return response.json();
+    return (await response.json()).filter(filterAnnotation);
+}
+
+function filterAnnotation(annotation) {
+    if (!annotation.type) {
+        return true;
+    }
+    if (annotation.type === 'component') {
+        return true;
+    }
+    return annotation.url === getCurrentPageUrl();
 }
 
 // debounce function
@@ -161,3 +171,7 @@ function getServerUrl() {
         SERVER_URL = url.endsWith('/') ? url.slice(0, -1) : url;
     });
 }
+
+function getCurrentPageUrl() {
+    return window.location.origin + window.location.pathname;
+}   

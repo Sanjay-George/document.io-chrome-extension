@@ -56,6 +56,8 @@ async function handlePageLoad() {
     }
 }
 
+
+
 async function handleMutations(mutationsList, observer) {
     for (const mutation of mutationsList) {
         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
