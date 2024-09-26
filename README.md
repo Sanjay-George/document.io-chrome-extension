@@ -35,6 +35,7 @@ Setting up the extension is easy and quick. Follow these steps to install it loc
    ```bash
    # In the root folder of the project
    cd ui
+   npm install
    npm run build
    ```
 
